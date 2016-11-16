@@ -1,0 +1,95 @@
+PIC32MZ2048EFM144 Minimal Working Sample.
+
+
+%!target  : html
+%!encoding: utf-8
+%!style  : tutorial.css
+%!options : --toc --enum-title --css-inside
+
+= Introduction =
+
+This mini how-to is intended to show how to compile a minimal working application to the PIC32MZ2048EFM144 Microchip SoC without using the MPLABX compiler or linker scripts.
+
+= Pre-Requisits =
+
+ - PIC32MZ Embedded Connectivity Starter Kit board.
+ - MPLABX IPE already installed (used to flash the bootloader for the first time).
+ - MIPS-MTI toolchain already installed. 
+ 
+
+Tested on Ubuntu 14.04 LTS.
+
+
+= Deployment =
+
+1) Use the MPLABX IPE to flash the Microchip_UART.hex to the board.
+    - After flashed, the LED1 will keep blinking showing the that the bootloader is ready to upload a hex file.
+
+
+2) Compile the blink.c sample using the MIPS-MTI toolchain using "make blink."
+
+```
+#: make blink
+
+mips-mti-elf-as -EL -msoft-float -o crt0.o crt0.s
+mips-mti-elf-gcc -EL -O2 -c -mabi=32 -mno-check-zero-division -msoft-float -fshort-double -ffreestanding -nostdlib -fomit-frame-pointer -G 0 -I ./include -DCPU_SPEED=200000000  -o blink.o blink.c
+mips-mti-elf-ld  -Tpic32mz.ld -Map blink.map -N -o blink.elf \
+                crt0.o blink.o
+mips-mti-elf-objdump --disassemble --reloc blink.elf > blink.lst
+mips-mti-elf-objdump -h blink.elf > blink.sec
+mips-mti-elf-objdump -s blink.elf > blink.cnt
+mips-mti-elf-objcopy -O binary blink.elf blink.bin
+mips-mti-elf-objcopy -O ihex --change-addresses=0x80000000 blink.elf blink.hex
+mips-mti-elf-size blink.elf
+   text    data     bss     dec     hex filename
+   4512       0       0    4512    11a0 blink.elf
+```
+
+
+3) Upload the resulting blink.hex file to the board using "make load". For this, use a second USB cable to connect to the board's UART port. 
+
+
+```
+#: make load
+
+stty 115200 raw cs8 -parenb -crtscts clocal cread ignpar ignbrk -ixon -ixoff -ixany -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -F /dev/ttyACM0
+./pic32prog -d /dev/ttyACM0 blink.hex 
+Programmer for Microchip PIC32 microcontrollers, Version 2.0.186
+    Copyright: (C) 2011-2015 Serge Vakulenko
+      Adapter: STK500v2 Bootloader
+ Program area: 1d000000-1d1fffff
+    Processor: Bootloader
+ Flash memory: 2048 kbytes
+  Boot memory: 80 kbytes
+         Data: 4512 bytes
+        Erase: done
+Program flash: ###### done
+ Verify flash: ##### done
+ Program rate: 3359 bytes per second
+
+```
+
+4) If all LEDs start to blink, it worked! You can open the UART port and see the "Hello World!" message being printed. 
+
+```
+#: cat /dev/ttyACM0 
+Hello World!
+Hello World!
+Hello World!
+Hello World!
+Hello World!
+Hello World!
+Hello World!
+...
+```
+
+
+= Considerations =
+
+- Upload a new application to the board requires turn off the board. 
+- On power on, the board will always stop at the bootloader waiting for upload an application. 
+    - This is for debugging purposes only. 
+
+
+
+

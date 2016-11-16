@@ -34,15 +34,6 @@ int             Arr_2_Glob [50] [50];
 Enumeration     Func_1 ();
   /* forward declaration necessary since Enumeration may not simply be int */
 
-#ifndef REG
-        Boolean Reg = false;
-#define REG
-        /* REG becomes defined as empty */
-        /* i.e. no register variables   */
-#else
-        Boolean Reg = true;
-#endif
-
 /* variables for time measurement: */
 
 #ifdef TIMES
@@ -79,13 +70,26 @@ float           Microseconds,
 
 /* end of variables for time measurement */
 
-
+#ifdef PIC32MZ
+main (unsigned int runs)
+#else
 main ()
+#endif
 /*****/
 
   /* main program, corresponds to procedures        */
   /* Main and Proc_0 in the Ada version             */
 {
+#ifndef REG
+	Boolean Reg = false;
+#define REG
+	/* REG becomes defined as empty */
+	/* i.e. no register variables   */
+#else
+	Boolean Reg = true;
+#endif
+	
+	
         One_Fifty       Int_1_Loc;
   REG   One_Fifty       Int_2_Loc;
         One_Fifty       Int_3_Loc;
@@ -94,7 +98,9 @@ main ()
         Str_30          Str_1_Loc;
         Str_30          Str_2_Loc;
   REG   int             Run_Index;
-  REG   int             Number_Of_Runs;
+  REG   int             Number_Of_Runs = runs;
+  
+  
 
   /* Initializations */
 
@@ -128,6 +134,7 @@ main ()
     printf ("Program compiled without 'register' attribute\n");
     printf ("\n");
   }
+#ifndef PIC32MZ  
   printf ("Please give the number of runs through the benchmark: ");
   {
     int n;
@@ -135,7 +142,7 @@ main ()
     Number_Of_Runs = n;
   }
   printf ("\n");
-
+#endif
   printf ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
 
   /***************/
