@@ -3,7 +3,7 @@
 USE_REGISTERS=yes
 
 #Number of executions. 
-RUNS = 4000000
+RUNS = 10000000
 
 #platform options
 BAUDRATE=115200

@@ -299,6 +299,7 @@ main ()
     printf ("%6.4f \n", Microseconds);
     printf ("Dhrystones per Second:                      ");
     printf ("%6.4f \n", Dhrystones_Per_Second);
+    printf ("Total Time in Secods: %d", User_Time);
     printf ("\n");
 #else
   {
