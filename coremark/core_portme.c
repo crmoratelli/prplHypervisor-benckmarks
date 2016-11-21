@@ -7,8 +7,13 @@
 */ 
 #include "coremark.h"
 #include "core_portme.h"
+#ifdef NATIVE
+#include <pic32mz.h>
+#else
 #include <arch.h>
 #include <platform.h>
+#endif
+
 
 #if VALIDATION_RUN
 	volatile ee_s32 seed1_volatile=0x3415;

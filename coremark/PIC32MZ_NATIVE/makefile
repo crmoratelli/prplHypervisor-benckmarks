@@ -22,7 +22,7 @@ OBJ_MIPS = $(CROSS_COMPILER)objcopy
 SIZE_MIPS = $(CROSS_COMPILER)size
 GCC_MIPS = $(CROSS_COMPILER)gcc
 
-PORT_CFLAGS = -O3 -EL
+PORT_CFLAGS = -O2 -EL
 XCFLAGS = -DPERFORMANCE_RUN=1
 XLFLAGS = -lrt -static
 FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
@@ -30,7 +30,7 @@ CFLAGS  = $(PORT_CFLAGS) $(IPATH) -DFLAGS_STR=\"$(FLAGS_STR)\"
 CFLAGS += -DITERATIONS=0 
 CFLAGS += $(XCFLAGS)
 
-GCCFLAGS= -EL $(CFLAGS) -DMEM_METHOD=MEM_STATIC -DHAS_PRINTF -DMAIN_HAS_NOARGC -DLITTLE_ENDIAN -DITERATIONS=0 -march=24kec -Ofast -funroll-all-loops -finline-limit=200 -fselective-scheduling -falign-jumps=4 -falign-loops=4 -DCPU_SPEED=$(CPU_SPEED) $(XCFLAGS) -DPIC32MZ -c -Wno-unused-result -Wno-pointer-to-int-cast -mips32r2 -mtune=m14k -mno-check-zero-division -msoft-float -fshort-double -ffreestanding -nostdlib -fomit-frame-pointer -G 0  
+GCCFLAGS= -EL $(CFLAGS) -DMEM_METHOD=MEM_STATIC -DNATIVE -DHAS_PRINTF -DMAIN_HAS_NOARGC -DLITTLE_ENDIAN -DITERATIONS=0  -finline-limit=200 -fselective-scheduling -falign-jumps=4 -falign-loops=4 -DCPU_SPEED=$(CPU_SPEED) $(XCFLAGS) -DPIC32MZ -c -Wno-unused-result -Wno-pointer-to-int-cast -mips32r2 -mtune=m14k -mno-check-zero-division -msoft-float -fshort-double -ffreestanding -nostdlib -fomit-frame-pointer -G 0  
 
 
 
