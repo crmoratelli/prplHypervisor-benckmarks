@@ -1,0 +1,341 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+static_memblk       0x7d0             core_main.o
+
+Discarded input sections
+
+ .reginfo       0x0000000000000000       0x18 core_main.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 core_main.o
+ .reginfo       0x0000000000000000       0x18 core_matrix.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 core_matrix.o
+ .reginfo       0x0000000000000000       0x18 core_portme.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 core_portme.o
+ .reginfo       0x0000000000000000       0x18 core_state.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 core_state.o
+ .reginfo       0x0000000000000000       0x18 core_util.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 core_util.o
+ .reginfo       0x0000000000000000       0x18 crt0.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 crt0.o
+ .reginfo       0x0000000000000000       0x18 libc.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 libc.o
+ .reginfo       0x0000000000000000       0x18 malloc.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 malloc.o
+ .reginfo       0x0000000000000000       0x18 native_app.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 native_app.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+flash            0x000000009d000000 0x0000000000020000 xr
+ram              0x0000000080000000 0x0000000000020000 rw !x
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000080020000                _stack = (ORIGIN (ram) + 0x20000)
+                0x0000000000001000                _stack_size = 0x1000
+
+.text           0x000000009d000000     0xfe80
+ *(.exception)
+ .exception     0x000000009d000000      0x100 crt0.o
+                0x0000000000000200                . = 0x200
+ *fill*         0x000000009d000100      0x100 
+ *(.vector0)
+ .vector0       0x000000009d000200       0xe4 crt0.o
+                0x000000009d000200                _isr
+                0x0000000000001000                . = 0x1000
+ *fill*         0x000000009d0002e4      0xd1c 
+ *(.eentry)
+ .eentry        0x000000009d001000       0x78 crt0.o
+                0x000000009d001078                _text = .
+ *(.text)
+ .text          0x000000009d001078     0x18cc core_list_join.o
+                0x000000009d001078                calc_func
+                0x000000009d001198                cmp_complex
+                0x000000009d001394                cmp_idx
+                0x000000009d0013e4                copy_info
+                0x000000009d0013f8                core_bench_list
+                0x000000009d001eb0                core_list_init
+                0x000000009d0024fc                core_list_insert_new
+                0x000000009d00256c                core_list_remove
+                0x000000009d002594                core_list_undo_remove
+                0x000000009d0025b8                core_list_find
+                0x000000009d002648                core_list_reverse
+                0x000000009d0026f4                core_list_mergesort
+ .text          0x000000009d002944      0xe34 core_main.o
+                0x000000009d002944                iterate
+                0x000000009d002abc                coremain
+ .text          0x000000009d003778     0x23c4 core_matrix.o
+                0x000000009d003778                matrix_test
+                0x000000009d004bc8                core_bench_matrix
+                0x000000009d004c18                core_init_matrix
+                0x000000009d004f34                matrix_sum
+                0x000000009d005110                matrix_mul_const
+                0x000000009d0052bc                matrix_add_const
+                0x000000009d0055a8                matrix_mul_vect
+                0x000000009d005744                matrix_mul_matrix
+                0x000000009d005960                matrix_mul_matrix_bitextract
+ .text          0x000000009d005b3c       0x6c core_portme.o
+                0x000000009d005b3c                barebones_clock
+                0x000000009d005b44                start_time
+                0x000000009d005b54                stop_time
+                0x000000009d005b64                get_time
+                0x000000009d005b7c                time_in_secs
+                0x000000009d005b94                portable_init
+                0x000000009d005ba0                portable_fini
+ .text          0x000000009d005ba8      0xce8 core_state.o
+                0x000000009d005ba8                core_bench_state
+                0x000000009d0061a4                core_init_state
+                0x000000009d006654                core_state_transition
+ .text          0x000000009d006890      0x9a0 core_util.o
+                0x000000009d006890                get_seed_32
+                0x000000009d00690c                crcu8
+                0x000000009d006a14                crcu16
+                0x000000009d006c1c                crcu32
+                0x000000009d007020                crc16
+                0x000000009d007228                check_data_types
+ .text          0x000000009d007230        0x0 crt0.o
+ .text          0x000000009d007230     0x85c4 libc.o
+                0x000000009d00ae00                strcpy
+                0x000000009d00ae78                strncpy
+                0x000000009d00b230                strcat
+                0x000000009d00b320                strncat
+                0x000000009d00b55c                strcmp
+                0x000000009d00b590                strncmp
+                0x000000009d00b77c                strstr
+                0x000000009d00b7f4                strlen
+                0x000000009d00b898                strchr
+                0x000000009d00b8c4                strpbrk
+                0x000000009d00b904                strsep
+                0x000000009d00b950                strtok
+                0x000000009d00b9f8                memcpy
+                0x000000009d00bcf8                memmove
+                0x000000009d00c12c                memcmp
+                0x000000009d00c2c8                memset
+                0x000000009d00c4e4                strtol
+                0x000000009d00c884                atoi
+                0x000000009d00c99c                itoa
+                0x000000009d00ccc4                puts
+                0x000000009d00ce00                gets
+                0x000000009d00ceb4                abs
+                0x000000009d00cec4                random
+                0x000000009d00cee8                srand
+                0x000000009d00cef4                atof
+                0x000000009d00d1f8                printf
+                0x000000009d00d228                sprintf
+                0x000000009d00d25c                udelay
+                0x000000009d00d30c                putchar
+                0x000000009d00d3a0                kbhit
+                0x000000009d00d3b0                getchar
+                0x000000009d00d444                proc_init
+                0x000000009d00d490                start_timer
+                0x000000009d00d4c4                init_uart
+                0x000000009d00d4f8                SoftReset
+                0x000000009d00d5d0                __addsf3
+                0x000000009d00d778                __subsf3
+                0x000000009d00d940                __cmpsf2
+                0x000000009d00d988                __ltsf2
+                0x000000009d00d9bc                __lesf2
+                0x000000009d00d9fc                __gtsf2
+                0x000000009d00da3c                __gesf2
+                0x000000009d00da70                __eqsf2
+                0x000000009d00da7c                __nesf2
+                0x000000009d00da88                __mulsf3
+                0x000000009d00db48                __divsf3
+                0x000000009d00dd00                __negsf2
+                0x000000009d00dd18                __fixsfsi
+                0x000000009d00dd58                __fixunssfsi
+                0x000000009d00dd98                __floatsisf
+                0x000000009d00defc                __floatunsisf
+                0x000000009d00e04c                __mulsi3
+                0x000000009d00e144                __muldsi3
+                0x000000009d00e1a0                __muldi3
+                0x000000009d00e3d4                __udivmodsi4
+                0x000000009d00e628                __divsi3
+                0x000000009d00e834                __modsi3
+                0x000000009d00e9e0                __udivsi3
+                0x000000009d00ec2c                __umodsi3
+                0x000000009d00ee3c                __ashldi3
+                0x000000009d00ee78                __ashrdi3
+                0x000000009d00eeb8                __lshrdi3
+                0x000000009d00eef4                __udivmoddi4
+                0x000000009d00f0a0                __umoddi3
+                0x000000009d00f1e8                __udivdi3
+                0x000000009d00f378                __moddi3
+                0x000000009d00f570                __divdi3
+ .text          0x000000009d00f7f4      0x5d0 malloc.o
+                0x000000009d00f7f4                HeapInit
+                0x000000009d00f85c                malloc
+                0x000000009d00f8ec                free
+                0x000000009d00f9ac                calloc
+                0x000000009d00fa74                realloc
+                0x000000009d00fd38                init_mem
+ .text          0x000000009d00fdc4       0xbc native_app.o
+                0x000000009d00fdc4                _irq_handler
+                0x000000009d00fe34                start_app
+ *(.text.*)
+                0x000000009d00fe80                _etext = .
+
+.MIPS.abiflags  0x000000009d00fe80       0x18
+                0x000000009d00fe80                __MIPS_abiflags_start = .
+ *(.MIPS.abiflags)
+ .MIPS.abiflags
+                0x000000009d00fe80       0x18 core_list_join.o
+                0x000000009d00fe98                __MIPS_abiflags_end = .
+
+.rodata         0x000000009d00fe98      0x668
+                0x000000009d00fe98                _rodata = .
+ *(.rodata)
+ .rodata        0x000000009d00fe98       0x24 core_main.o
+ .rodata        0x000000009d00febc       0xb4 core_state.o
+ .rodata        0x000000009d00ff70       0x18 core_util.o
+ *(.rodata.*)
+ .rodata.str1.4
+                0x000000009d00ff88      0x42a core_main.o
+                                        0x42c (size before relaxing)
+ *fill*         0x000000009d0103b2        0x2 
+ .rodata.str1.4
+                0x000000009d0103b4       0xad core_state.o
+                                         0xb0 (size before relaxing)
+ *fill*         0x000000009d010461        0x3 
+ .rodata.str1.4
+                0x000000009d010464       0x88 libc.o
+ .rodata.cst4   0x000000009d0104ec       0x14 libc.o
+                0x000000009d010500                _erodata = .
+
+.data           0x0000000080000000       0x20 load address 0x000000009d010500
+                0x0000000080000000                _data = .
+ *(.data)
+ .data          0x0000000080000000        0x0 core_list_join.o
+ .data          0x0000000080000000        0xc core_main.o
+                0x0000000080000000                mem_name
+ .data          0x000000008000000c        0x0 core_matrix.o
+ .data          0x000000008000000c        0x8 core_portme.o
+                0x000000008000000c                default_num_contexts
+                0x0000000080000010                seed3_volatile
+ .data          0x0000000080000014        0x0 core_state.o
+ .data          0x0000000080000014        0x0 core_util.o
+ .data          0x0000000080000014        0x0 crt0.o
+ .data          0x0000000080000014        0x4 libc.o
+ .data          0x0000000080000018        0x0 malloc.o
+ .data          0x0000000080000018        0x0 native_app.o
+ *(.data.*)
+                0x0000000080000018                _gp = .
+ *(.sdata)
+ *(.sdata.*)
+                0x0000000080000020                . = ALIGN (0x10)
+ *fill*         0x0000000080000018        0x8 
+                0x0000000080000020                _edata = .
+
+.bss            0x0000000080000020      0x7fc load address 0x000000009d010520
+                0x0000000080000020                _bss_start = .
+ *(.bss)
+ .bss           0x0000000080000020        0x0 core_list_join.o
+ .bss           0x0000000080000020        0x0 core_main.o
+ .bss           0x0000000080000020        0x0 core_matrix.o
+ .bss           0x0000000080000020       0x18 core_portme.o
+                0x0000000080000020                seed5_volatile
+                0x0000000080000024                seed4_volatile
+                0x0000000080000028                seed2_volatile
+                0x000000008000002c                seed1_volatile
+ .bss           0x0000000080000038        0x0 core_state.o
+ .bss           0x0000000080000038        0x0 core_util.o
+ .bss           0x0000000080000038        0x0 crt0.o
+ .bss           0x0000000080000038        0x4 libc.o
+ .bss           0x000000008000003c       0x10 malloc.o
+ .bss           0x000000008000004c        0x0 native_app.o
+ *(.bss.*)
+ *(.sbss)
+ *(.sbss.*)
+ *(.scommon)
+                0x000000008000004c                . = ALIGN (0x4)
+                0x000000008000004c                _bss_end = .
+ COMMON         0x000000008000004c      0x7d0 core_main.o
+                0x000000008000004c                static_memblk
+                0x000000008000081c                _end = .
+                0x000000008000081c                . = ALIGN (0x4)
+                0x000000008000081c                _heap_start = .
+                0x000000000001e7e0                _heap_size = (((0x20000 - (_heap_start - ORIGIN (ram))) - 0x4) - _stack_size)
+LOAD core_list_join.o
+LOAD core_main.o
+LOAD core_matrix.o
+LOAD core_portme.o
+LOAD core_state.o
+LOAD core_util.o
+LOAD crt0.o
+LOAD libc.o
+LOAD malloc.o
+LOAD native_app.o
+OUTPUT(coremark.elf elf32-tradlittlemips)
+
+.reginfo        0x0000000000000000       0x18
+ .reginfo       0x0000000000000000       0x18 core_list_join.o
+
+.pdr            0x0000000000000000      0xec0
+ .pdr           0x0000000000000000      0x180 core_list_join.o
+ .pdr           0x0000000000000180       0x40 core_main.o
+ .pdr           0x00000000000001c0      0x120 core_matrix.o
+ .pdr           0x00000000000002e0       0xe0 core_portme.o
+ .pdr           0x00000000000003c0       0x60 core_state.o
+ .pdr           0x0000000000000420       0xc0 core_util.o
+ .pdr           0x00000000000004e0        0x0 crt0.o
+ .pdr           0x00000000000004e0      0x8e0 libc.o
+ .pdr           0x0000000000000dc0       0xc0 malloc.o
+ .pdr           0x0000000000000e80       0x40 native_app.o
+
+.mdebug.abi32   0x0000000000000000        0x0
+ .mdebug.abi32  0x0000000000000000        0x0 core_list_join.o
+ .mdebug.abi32  0x0000000000000000        0x0 core_main.o
+ .mdebug.abi32  0x0000000000000000        0x0 core_matrix.o
+ .mdebug.abi32  0x0000000000000000        0x0 core_portme.o
+ .mdebug.abi32  0x0000000000000000        0x0 core_state.o
+ .mdebug.abi32  0x0000000000000000        0x0 core_util.o
+ .mdebug.abi32  0x0000000000000000        0x0 libc.o
+ .mdebug.abi32  0x0000000000000000        0x0 malloc.o
+ .mdebug.abi32  0x0000000000000000        0x0 native_app.o
+
+.comment        0x0000000000000000       0x44
+ .comment       0x0000000000000000       0x44 core_list_join.o
+                                         0x45 (size before relaxing)
+ .comment       0x0000000000000044       0x45 core_main.o
+ .comment       0x0000000000000044       0x45 core_matrix.o
+ .comment       0x0000000000000044       0x45 core_portme.o
+ .comment       0x0000000000000044       0x45 core_state.o
+ .comment       0x0000000000000044       0x45 core_util.o
+ .comment       0x0000000000000044       0x45 libc.o
+ .comment       0x0000000000000044       0x45 malloc.o
+ .comment       0x0000000000000044       0x45 native_app.o
+
+.gnu.attributes
+                0x0000000000000000       0x10
+ .gnu.attributes
+                0x0000000000000000       0x10 core_list_join.o
+ .gnu.attributes
+                0x0000000000000010       0x10 core_main.o
+ .gnu.attributes
+                0x0000000000000020       0x10 core_matrix.o
+ .gnu.attributes
+                0x0000000000000030       0x10 core_portme.o
+ .gnu.attributes
+                0x0000000000000040       0x10 core_state.o
+ .gnu.attributes
+                0x0000000000000050       0x10 core_util.o
+ .gnu.attributes
+                0x0000000000000060       0x10 crt0.o
+ .gnu.attributes
+                0x0000000000000070       0x10 libc.o
+ .gnu.attributes
+                0x0000000000000080       0x10 malloc.o
+ .gnu.attributes
+                0x0000000000000090       0x10 native_app.o

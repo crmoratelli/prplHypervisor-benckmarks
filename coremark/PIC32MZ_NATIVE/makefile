@@ -1,15 +1,8 @@
 
-#Uncoment if you desires to generate dhyrstone using registers.
-USE_REGISTERS=yes
-
-#Number of executions. 
-RUNS = 4000000
-
 #platform options
 BAUDRATE=115200
 F_CLK=200000000
 SERIAL_DEV=/dev/ttyACM0
-TIME_FUNC= -DTIME
 CPU_SPEED = 200000000
 
 
@@ -17,11 +10,9 @@ CPU_SPEED = 200000000
 CROSS_COMPILER=mips-mti-elf-
 
 #gcc options. Must be tunned for dhyrstone
-GCCOPTIM= -O2
-LFLAGS= -static
+LFLAGS= -static 
 AS_FLAGS = -EL -mips32r2 -msoft-float
-GCCFLAGS= -EL $(GCCOPTIM) $(TIME_FUNC) -DRUNS=$(RUNS) -DCPU_SPEED=$(CPU_SPEED) -DLITTLE_ENDIAN -DPIC32MZ -c -Wno-unused-result -Wno-pointer-to-int-cast -mips32r2 -mtune=m14k -mno-check-zero-division -msoft-float -fshort-double -ffreestanding -nostdlib -fomit-frame-pointer -G 0 
-INCLUDE = -Ibare-app/include -I../
+INCLUDE = -Ibare-app/include -I../ -I../barebones/
 
 AS_MIPS = $(CROSS_COMPILER)as 
 LD_MIPS = $(CROSS_COMPILER)ld 
@@ -31,21 +22,31 @@ OBJ_MIPS = $(CROSS_COMPILER)objcopy
 SIZE_MIPS = $(CROSS_COMPILER)size
 GCC_MIPS = $(CROSS_COMPILER)gcc
 
-ifeq ($(USE_REGISTERS),yes)
-    GCCFLAGS += -DREG=register
-    REG_NAME=_reg
-endif
+PORT_CFLAGS = -O3 -EL
+XCFLAGS = -DPERFORMANCE_RUN=1
+XLFLAGS = -lrt -static
+FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
+CFLAGS  = $(PORT_CFLAGS) $(IPATH) -DFLAGS_STR=\"$(FLAGS_STR)\"
+CFLAGS += -DITERATIONS=0 
+CFLAGS += $(XCFLAGS)
+
+GCCFLAGS= -EL $(CFLAGS) -DMEM_METHOD=MEM_STATIC -DHAS_PRINTF -DMAIN_HAS_NOARGC -DLITTLE_ENDIAN -DITERATIONS=0 -march=24kec -Ofast -funroll-all-loops -finline-limit=200 -fselective-scheduling -falign-jumps=4 -falign-loops=4 -DCPU_SPEED=$(CPU_SPEED) $(XCFLAGS) -DPIC32MZ -c -Wno-unused-result -Wno-pointer-to-int-cast -mips32r2 -mtune=m14k -mno-check-zero-division -msoft-float -fshort-double -ffreestanding -nostdlib -fomit-frame-pointer -G 0  
 
 
-BIN_NAME = dry2$(REG_NAME)
+
+BIN_NAME = coremark
 
 all:
 	$(AS_MIPS) $(AS_FLAGS) -o crt0.o bare-app/lib/crt0.s
 	$(GCC_MIPS) $(GCCFLAGS) $(INCLUDE) -o libc.o bare-app/lib/libc.c
 	$(GCC_MIPS) $(GCCFLAGS) $(INCLUDE) -o malloc.o bare-app/lib/malloc.c
 	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o native_app.o bare-app/native_app.c
-	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -fno-inline -o dhry_1.o ../dhry_1.c
-	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -fno-inline -o dhry_2.o ../dhry_2.c
+	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o core_list_join.o ../core_list_join.c
+	$(GCC_MIPS) $(GCCFLAGS) -DFLAGS_STR=\"$(CFLAGS)\" $(INCLUDE) -o core_main.o ../core_main.c
+	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o core_matrix.o ../core_matrix.c
+	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o core_state.o ../core_state.c
+	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o core_util.o ../core_util.c
+	$(GCC_MIPS)  $(GCCFLAGS) $(INCLUDE) -o core_portme.o ../core_portme.c
 	$(LD_MIPS) -Tbare-app/lib/pic32mz.ld -Map $(BIN_NAME).map -N -o $(BIN_NAME).elf *.o
 	$(DUMP_MIPS) --disassemble --reloc $(BIN_NAME).elf > $(BIN_NAME).lst
 	$(DUMP_MIPS) -h $(BIN_NAME).elf > $(BIN_NAME).sec
@@ -65,4 +66,5 @@ clean:
 	-rm -rf app/*~
 	-rm -rf include/*~
 	-rm -rf lib/*~
+
 

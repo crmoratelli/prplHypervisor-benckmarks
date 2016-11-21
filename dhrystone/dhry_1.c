@@ -71,7 +71,7 @@ float           Microseconds,
 /* end of variables for time measurement */
 
 #ifdef PIC32MZ
-main (unsigned int runs)
+main_dhry (unsigned int runs)
 #else
 main ()
 #endif
@@ -296,9 +296,9 @@ main ()
     Dhrystones_Per_Second = (float) Number_Of_Runs / (float) User_Time;
 
     printf ("Microseconds for one run through Dhrystone: ");
-    printf ("%6.1f \n", Microseconds);
+    printf ("%6.4f \n", Microseconds);
     printf ("Dhrystones per Second:                      ");
-    printf ("%6.1f \n", Dhrystones_Per_Second);
+    printf ("%6.4f \n", Dhrystones_Per_Second);
     printf ("\n");
 #else
   {
