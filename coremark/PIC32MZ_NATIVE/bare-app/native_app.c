@@ -28,6 +28,8 @@ void _irq_handler(){
 }
 
 int start_app() {
+	uint32_t perfcount0, perfcount1;
+	perf_control_t perf0, perf1;
 	
 	proc_init();
 
@@ -37,8 +39,38 @@ int start_app() {
 
 	init_uart(115200, 200000000);
 	
+	/* peformance counter 0 - D-Cache Misses */
+	perf0.w = 0;
+	perf0.ec = 0;
+	perf0.event = 11;
+	perf0.ie = 0;
+	perf0.u = 0;
+	perf0.k = 1;
+	perf0.exl = 0;
+	
+	/* peformance counter 1 - I-Cache Misses */
+	perf1.w = 0;
+	perf1.ec = 0;
+	perf1.event = 9;
+	perf1.ie = 0;
+	perf1.u = 0;
+	perf1.k = 1;
+	perf1.exl = 0;
+	
+	mtc0(CP0_PERFCTL0, 1, 0);
+	mtc0(CP0_PERFCTL1, 3, 0);
+	
+	mtc0(CP0_PERFCTL0, 0, perf0.w);
+	mtc0(CP0_PERFCTL1, 2, perf1.w);
+	
 	coremain();
+	
+	mtc0(CP0_PERFCTL0, 0, 0);
+	mtc0(CP0_PERFCTL1, 2, 0);
+	
+	printf("\nD-Cache Misses: %d", perfcount0);
+	printf("\nI-Cache Misses: %d", perfcount1);
+	
 	
 	return 0;
 }
-
