@@ -49,7 +49,7 @@ CORETIMETYPE barebones_clock() {
 	*/
 #define CLOCKS_PER_SEC (CPU_SPEED/2)
 #define GETMYTIME(_t) (*_t=barebones_clock())
-#define MYTIMEDIFF(fin,ini) ((fin)-(ini))
+#define MYTIMEDIFF(fin,ini) calc_diff_time(fin,ini)
 #define TIMER_RES_DIVIDER 1
 #define SAMPLE_TIME_IMPLEMENTATION 1
 #define EE_TICKS_PER_SEC (CLOCKS_PER_SEC / TIMER_RES_DIVIDER)

@@ -646,6 +646,14 @@ void SoftReset(){
 	while(1) ;  
 }
 
+uint32_t calc_diff_time(uint32_t now, uint32_t old){
+	if (now >= old){
+		return  now - old;
+	}else{
+		return 0xffffffff - (old - now);
+	}
+}
+
 
 /*
  * software implementation of IEEE single-precision floating point

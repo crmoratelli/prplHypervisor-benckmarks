@@ -50,6 +50,7 @@ extern void srand(uint32_t seed);
 extern int32_t printf(const int8_t *fmt, ...);
 extern int32_t sprintf(int8_t *out, const int8_t *fmt, ...);
 
+uint32_t calc_diff_time(uint32_t now, uint32_t old);
 void proc_init();
 void start_timer();
 void init_uart(uint32_t baudrate, uint32_t sysclk);
